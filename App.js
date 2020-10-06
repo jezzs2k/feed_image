@@ -1,15 +1,9 @@
 import React from 'react';
 
-import AvatarRow from './components/AvatarRow';
+import Card from './components/Card';
 
 const App = () => {
-  return (
-    <AvatarRow
-      fullName={'Vu Thanh Hieu'}
-      linkText={'Comment'}
-      onPressLinkText={() => console.log('Hieu DZ')}
-    />
-  );
+  return <Card />;
 };
 
 export default App;

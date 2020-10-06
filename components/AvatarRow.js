@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import PropTypes from 'prop-types';
 
 import Avatar from './Avatar';
 import {ramdomColor} from '../utils/getColorAvatar';
@@ -22,6 +23,12 @@ const AvatarRow = ({fullName, linkText, onPressLinkText}) => {
       )}
     </View>
   );
+};
+
+AvatarRow.propTypes = {
+  fullName: PropTypes.string.isRequired,
+  linkText: PropTypes.string.isRequired,
+  onPressLinkText: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -50,7 +57,6 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   linkTextContainer: {
-    backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
   },
