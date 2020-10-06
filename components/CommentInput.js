@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
+import {TextInput, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
+
+import ViewDefault from './ViewDefault';
 
 const CommentInput = ({placeholder, onSubmit}) => {
   const [text, setText] = useState('');
@@ -19,16 +21,19 @@ const CommentInput = ({placeholder, onSubmit}) => {
   };
 
   return (
-    <View style={styles.constainer}>
+    <ViewDefault style={styles.constainer}>
       <TextInput
         style={styles.textInputStyle}
         placeholder={placeholder}
-        value={text}
+        defaultValue={text}
         onChangeText={onChangeText}
         underlineColorAndroid="transparent"
         onSubmitEditing={handleSubmitEditing}
+        onEndEditing={() => {
+          setText('');
+        }}
       />
-    </View>
+    </ViewDefault>
   );
 };
 
@@ -37,8 +42,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: 'rgba(0,0,0,0.1)',
     paddingHorizontal: 20,
-    height: 60,
-    marginVertical: 20,
+    height: 50,
   },
   textInputStyle: {
     flex: 1,
