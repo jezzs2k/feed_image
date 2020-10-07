@@ -4,36 +4,57 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  View,
+  Easing,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 import AvatarRow from './AvatarRow';
 import ViewDefault from './ViewDefault';
 import SvgHeart from './Svgs/heartIcon';
 
-const Card = ({openCommentScreen}) => {
+const Card = ({openCommentScreen, fullName, id, linkText}) => {
   const [timeClick, setTimeClick] = useState(null);
-  const [isLike, setIslike] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  let scaleValue = new Animated.Value(0);
+  const cardScale = scaleValue.interpolate({
+    inputRange: [0, 0.5, 0.9, 1],
+    outputRange: [1, 1.2, 1, 1.08],
+  });
+
+  let transformStyle = {
+    ...styles.heartAnimated,
+    transform: [{scale: cardScale}],
+    opacity: fadeAnim,
+  };
 
   const handleDoubleClick = () => {
     const now = new Date().getTime();
     const delta = now - timeClick;
-    if (delta < 200) {
+    if (delta < 250) {
       onFadeInHeart();
+    } else {
+      setTimeClick(now);
     }
-    setTimeClick(now);
   };
 
   const handleDetailFeed = () => {
-    openCommentScreen(1);
+    openCommentScreen(id);
   };
 
   const onFadeInHeart = () => {
+    scaleValue.setValue(0);
+    Animated.timing(scaleValue, {
+      toValue: 1,
+      duration: 650,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
+
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 1000,
+      duration: 650,
       useNativeDriver: false,
     }).start();
 
@@ -43,14 +64,14 @@ const Card = ({openCommentScreen}) => {
         duration: 0,
         useNativeDriver: false,
       }).start();
-    }, 1000);
+    }, 900);
   };
 
   return (
     <ViewDefault style={styles.container}>
       <AvatarRow
-        fullName={'Vu Thanh Hieu'}
-        linkText={'Comment'}
+        fullName={fullName}
+        linkText={linkText}
         onPressLinkText={() => console.log('Hieu DZ')}
       />
       <TouchableOpacity
@@ -65,8 +86,8 @@ const Card = ({openCommentScreen}) => {
               'https://cdn2.wpbeginner.com/wp-content/uploads/2013/09/removedefaultimagelinks-og.png',
           }}
         />
-        <Animated.View style={[styles.heartAnimated, {opacity: fadeAnim}]}>
-          <SvgHeart size={80} />
+        <Animated.View style={transformStyle}>
+          <SvgHeart size={100} />
         </Animated.View>
       </TouchableOpacity>
       <TouchableOpacity
@@ -75,6 +96,13 @@ const Card = ({openCommentScreen}) => {
       />
     </ViewDefault>
   );
+};
+
+Card.propTypes = {
+  linkText: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  fullName: PropTypes.string.isRequired,
+  openCommentScreen: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ScrollView, Modal} from 'react-native';
 
 import Card from './components/Card';
-import Comments from './components/Comments';
+import Comments from './screens/Comments';
 import ViewDefault from './components/ViewDefault';
 
 const App = () => {
