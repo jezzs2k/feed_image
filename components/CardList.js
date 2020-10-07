@@ -6,7 +6,8 @@ import Card from './Card';
 
 const CardList = ({items, commentsForItem, onPressComments}) => {
   const renderItem = ({item: {id, author}}) => {
-    const comments = commentsForItem[id];
+    const comments = commentsForItem[id] || [];
+
     return (
       <Card
         fullName={author}
@@ -17,7 +18,7 @@ const CardList = ({items, commentsForItem, onPressComments}) => {
     );
   };
 
-  const keyExtractor = ({item: {id}}) => id;
+  const keyExtractor = (item) => item?.id;
 
   return (
     <FlatList
@@ -25,6 +26,9 @@ const CardList = ({items, commentsForItem, onPressComments}) => {
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       extraData={commentsForItem}
+      refreshControl={console.log('Loading...')}
+      onEndReached={() => console.log('Loading...')}
+      onScrollEndDrag={() => console.log('Loading...')}
     />
   );
 };
@@ -36,8 +40,14 @@ CardList.propTypes = {
       author: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  commentsForItem: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
-    .isRequired,
+  commentsForItem: PropTypes.objectOf(
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        comment: PropTypes.string,
+      }),
+    ),
+  ),
   onPressComments: PropTypes.func.isRequired,
 };
 

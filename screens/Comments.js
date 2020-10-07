@@ -21,8 +21,6 @@ const Comments = ({comments, onClose, onSubmitComment, style}) => {
   );
 };
 
-const styles = StyleSheet.create({});
-
 Comments.propTypes = {
   comments: PropTypes.array.isRequired,
   onClose: PropTypes.func.isRequired,

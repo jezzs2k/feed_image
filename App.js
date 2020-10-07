@@ -1,17 +1,23 @@
 import React, {useState} from 'react';
-import {ScrollView, Modal} from 'react-native';
+import {Modal} from 'react-native';
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
 
-import Card from './components/Card';
 import Comments from './screens/Comments';
 import ViewDefault from './components/ViewDefault';
+import Feed from './screens/Feed';
 
 const App = () => {
-  const [commentsForItem, setCommentForItem] = useState([]);
+  const [commentsForItem, setCommentForItem] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [selectItemId, setSelectItemId] = useState(null);
 
   const handleComment = (text) => {
-    setCommentForItem((comments) => [text, ...comments]);
+    const commentItems = commentsForItem[selectItemId] || [];
+    setCommentForItem((comments) => ({
+      ...comments,
+      [selectItemId]: [...commentItems, {comment: text, id: uuidv4()}],
+    }));
   };
 
   const handleClose = () => {
@@ -25,15 +31,15 @@ const App = () => {
 
   return (
     <ViewDefault>
-      <ScrollView>
-        <Card openCommentScreen={openCommentScreen} />
-        <Card openCommentScreen={openCommentScreen} />
-      </ScrollView>
+      <Feed
+        onPressComments={openCommentScreen}
+        commentsForItem={commentsForItem}
+      />
       <Modal visible={showModal}>
         <Comments
           onClose={handleClose}
           onSubmitComment={handleComment}
-          comments={commentsForItem}
+          comments={commentsForItem[selectItemId] || []}
         />
       </Modal>
     </ViewDefault>

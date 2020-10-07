@@ -32,7 +32,7 @@ const Card = ({openCommentScreen, fullName, id, linkText}) => {
   const handleDoubleClick = () => {
     const now = new Date().getTime();
     const delta = now - timeClick;
-    if (delta < 250) {
+    if (delta < 300) {
       onFadeInHeart();
     } else {
       setTimeClick(now);

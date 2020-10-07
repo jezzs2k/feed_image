@@ -1,30 +1,33 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text} from 'react-native';
 import PropTypes from 'prop-types';
-import 'react-native-get-random-values';
-import {v4 as uuidv4} from 'uuid';
 import ViewDefault from './ViewDefault';
 
 const ComponentList = ({items}) => {
   const renderItem = (item) => {
     return (
-      <ViewDefault style={styles.comment} key={uuidv4()}>
-        <ViewDefault style={styles.headerComment}></ViewDefault>
-        <Text style={styles.textComment}>{item}</Text>
-        <ViewDefault style={styles.actionStyle}></ViewDefault>
+      <ViewDefault style={styles.comment} key={item?.id}>
+        <ViewDefault style={styles.headerComment} />
+        <Text style={styles.textComment}>{item?.comment}</Text>
+        <ViewDefault style={styles.actionStyle} />
       </ViewDefault>
     );
   };
 
   return (
     <ScrollView style={styles.container}>
-      {items.map((item) => renderItem(item))}
+      {items && items.length > 0 && items.map((item) => renderItem(item))}
     </ScrollView>
   );
 };
 
 ComponentList.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.string),
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      comment: PropTypes.string.isRequired,
+    }),
+  ),
 };
 
 const styles = StyleSheet.create({
